@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import com.huateng.batch.controller.DemoController;
 import com.huateng.batch.controller.ImportCustController;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class BatchExample {
 	public static void main(String[] args) {
 		try {

@@ -19,8 +19,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  * @author data
  *
  */
-@Configuration
-@EnableBatchProcessing
 public class DeleteWriterConfig extends ItemWriterAdapter<Object> {
 	private DriverManagerDataSource dataSource;
 	private String sql;
