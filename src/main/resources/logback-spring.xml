@@ -5,7 +5,7 @@
     <!-- test文件路径 -->
     <property name="TEST_FILE_PATH" value="F:/workspace/workspace/BonusBatch/log/bonusBatch.log" />
     <!-- pro文件路径 -->
-    <property name="PRO_FILE_PATH" value="F:/workspace/workspace/BonusBatch/log" />
+    <property name="PRO_FILE_PATH" value="F:/workspace/workspace/BonusBatch/log/bonusBatch.log" />
     <!-- 开发环境 -->
     <springProfile name="dev">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

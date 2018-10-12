@@ -1,7 +1,7 @@
 package com.huateng.batch.model;
 
 public class TblCustInf {
-	private Integer pkCustInf;
+	//private Integer pkCustInf;
 	private String custId;
 	private String custName;
 	private String usageKey;
@@ -35,12 +35,6 @@ public class TblCustInf {
 	private String relatType;
 	private String renzDate;
 	
-	public Integer getPkCustInf() {
-		return pkCustInf;
-	}
-	public void setPkCustInf(Integer pkCustInf) {
-		this.pkCustInf = pkCustInf;
-	}
 	public String getCustId() {
 		return custId;
 	}
@@ -233,5 +227,6 @@ public class TblCustInf {
 	public void setRenzDate(String renzDate) {
 		this.renzDate = renzDate;
 	}
+	
 
 }
