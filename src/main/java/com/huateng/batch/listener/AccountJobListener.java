@@ -3,6 +3,11 @@ package com.huateng.batch.listener;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 
+/***
+ * 
+ * @author 11299
+ *
+ */
 public class AccountJobListener implements JobExecutionListener{ 
 
     long startTime;

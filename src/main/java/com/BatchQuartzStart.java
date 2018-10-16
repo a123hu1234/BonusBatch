@@ -12,6 +12,7 @@ public class BatchQuartzStart {
 		ApplicationContext contex = SpringApplication.run(BatchQuartzStart.class, args);
 
 		QuartzManage manage = contex.getBean(QuartzManage.class);
+		//manage.addJob(HelloWorld.class, "HelloWorld", "HelloWorld", "0 */1 * * * ?", null);
 		manage.start();
 		
 	}

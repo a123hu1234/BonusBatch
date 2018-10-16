@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: BonusBatch
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: 11299
+Implementation-Vendor-Id: com.cbhu.bonus
+Build-Jdk: 1.8.0_181
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/BonusBatch
+Created-By: Maven Integration for Eclipse
+
