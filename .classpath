@@ -28,7 +28,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/soft/DbVisualizer-8.0.9new/ojdbc6-11.2.0.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/63101/Desktop/ojdbc6-11.2.0.2.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/toprules"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

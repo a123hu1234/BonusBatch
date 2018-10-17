@@ -399,5 +399,24 @@ public  class TblCardInfTmp  extends TblCardInf implements Serializable {
 		return super.toString();
 	}
 
+	public static String[] toArray() {
+		// TODO Auto-generated method stub
+		String[] array = new String[] {"custId","cardId","cardPrdName","cardBank","fakarq","cardPrd","cardSta", "acctNo"};
+		return array;
+	}
+	/*
+	 * 表字段
+	 */
+	public static String getTableClum() {
+		String sReturn = "TBL_CARD_INF_TMP(CUST_ID,CARD_ID,CARD_PRD_NAME,CARD_BANK,FAKARQ,CARD_TYPE,USAGE_KEY,ACCT_NO,CARD_PRD,KAAAJZ,KAAAXZ,KAAAZL,CARD_LEVEL,EXT_COULMN1,EXT_COULMN2,EXT_COULMN3,EXT_COULMN4,CARD_STA,CHANL_NO,RENZ_DATE)";
+		return sReturn;
+	}
+	
+	public static String getBeanClum() {
+		String sReturn = ":CUST_ID,:CARD_ID,:CARD_PRD_NAME,:CARD_BANK,:FAKARQ,:CARD_TYPE,:USAGE_KEY,:ACCT_NO,:CARD_PRD,:KAAAJZ,:KAAAXZ,:KAAAZL,:CARD_LEVEL,:EXT_COULMN1,:EXT_COULMN2,:EXT_COULMN3,:EXT_COULMN4,:CARD_STA,:CHANL_NO,:RENZ_DATE";
+				return sReturn;
+	}
+
+
 
 }

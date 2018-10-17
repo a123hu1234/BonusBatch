@@ -426,7 +426,23 @@ public  class TblAccountInf  implements Serializable {
 
 
 
-
+	public static String[] toArray() {
+		// TODO Auto-generated method stub
+		String[] array = new String[] {"changeDate","custId","acctId","acctName","currency","txnAmt","kmh", "extCoulmn1","acctState","openBank","openDate","ExtCoulmn2","cardNo","outsideAcct"};
+		return array;
+	}
+	/*
+	 * 表字段
+	 */
+	public static String getTableClum() {
+		String sReturn = "TBL_Account_INF(CUST_ID,ACCT_ID,CHANGE_DATE,ACCT_NAME,CURRENCY,TXN_AMT,KMH,PRODUCT_NO,PERIOD,OPEN_BANK,OPEN_DATE,ACCT_STATE,OUTSIDE_ACCT,CARD_NO,EXT_COULMN1,EXT_COULMN2,EXT_COULMN3,EXT_COULMN4,EXT_COULMN5,CHANL_NO)";
+		return sReturn;
+	}
+	
+	public static String getBeanClum() {
+		String sReturn = ":custId,:acctId,:changeDate,:acctName,:currency,:txnAmt,:kmh,:productNo,:period,:openBank,:openDate,:acctState,:outsideAcct,:cardNo,:extCoulmn1,:extCoulmn2,:extCoulmn3,:extCoulmn4,:extCoulmn5,:chanlNo";
+				return sReturn;
+	}
 
 
 	public String toString () {
