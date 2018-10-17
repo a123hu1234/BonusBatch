@@ -14,21 +14,18 @@ import com.huateng.batch.model.IntoAcctBean;
 import com.huateng.batch.model.TblBonusPlanDetail;
 
 @Component
-public class PlanDetailWriter implements ItemWriter<IntoAcctBean>{
+public class PlanDetailWriter implements ItemWriter<TblBonusPlanDetail>{
 	Logger logger = LoggerFactory.getLogger(IntoAcctWriter.class);
 	
 	@Autowired
 	private BonusPlanDetailDao dao;
 	
 	@Override
-	public void write(List<? extends IntoAcctBean> items) throws Exception {
-		List<TblBonusPlanDetail> list = new ArrayList<>();
-		for(IntoAcctBean bean : items) {
-			list.add(bean.getDetail());
-		}
-		logger.info("本次执行插入积分账户有效期表的数据条数:" + list.size());
-		if(!list.isEmpty()) {
-			dao.saveList(list);
+	public void write(List<? extends TblBonusPlanDetail> items) throws Exception {
+		
+		logger.info("本次执行插入积分账户有效期表的数据条数:" + items.size());
+		if(!items.isEmpty()) {
+			dao.saveList(items);
 			  
 			
 		}else {

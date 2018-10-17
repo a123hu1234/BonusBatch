@@ -1,5 +1,7 @@
 package com.huateng.batch.model;
 
+import com.huateng.util.Util;
+
 /***
  * 积分计划(带有效期)表
  * @author data
@@ -168,5 +170,30 @@ public class TblBonusPlanDetail {
 	public static String getBeanClum() {
 		String s="SEQ_BONUS_PLAN_DETAIL.nextVal,:usageKey,:custId,:acctId,:bpPlanType,:totalBonus,:validBonus,:applyBonus,:expireBonus,:validDate,:expiredStatus,:createOper,:createDate,:createTime,:modifyOper,:modifyDate,:modifyTime,:extCoulmn1,:extCoulmn2,:extCoulmn3,:extCoulmn4,:lockStatus";
 		return s;
+	}
+	
+	public void init(TblBonusAccItf itf) {
+		//this.setPkBonusPlanDetail(itf.get); //主键
+		this.setUsageKey(itf.getUsageKey());//部门标识
+		this.setCustId(itf.getCustId());//客户号
+		this.setAcctId(itf.getAcctId());//账号
+		this.setBpPlanType(itf.getBpPlanType());//积分类型
+		this.setTotalBonus(itf.getTxnBonus());//总产生积分
+		this.setValidBonus(itf.getTxnBonus());//可用积分
+		this.setApplyBonus(0);//已用积分
+		this.setExpireBonus(0);//过期积分 
+		this.setValidDate(itf.getValidDate());//积分失效日期
+		this.setExpiredStatus("0");//到期处理状态
+		this.setCreateOper("SYSTEM");//创建人
+		this.setCreateDate(Util.getCurrDate());//创建日期
+		this.setCreateTime(Util.getCurrTime2());//创建时间
+		this.setModifyOper("SYSTEM");//更新人
+		this.setModifyDate(Util.getCurrDate());//更新日期
+		this.setModifyTime(Util.getCurrTime2());//更新时间
+		//this.setExtCoulmn1(itf.get);//扩展字段1
+		//this.setExtCoulmn2(itf.get);//扩展字段2
+		//this.setExtCoulmn3(itf.get);//扩展字段3
+		//this.setExtCoulmn4(itf.get);//扩展字段4
+		this.setLockStatus("0");//状态； 0-正常，1-冻结
 	}
 }

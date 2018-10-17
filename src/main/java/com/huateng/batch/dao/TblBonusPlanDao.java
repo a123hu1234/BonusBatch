@@ -11,4 +11,6 @@ import com.huateng.batch.model.TblBonusPlan;
  */
 public interface TblBonusPlanDao {
 	public int[] insertPlan(List<? extends TblBonusPlan>  list);
+	
+	public int[] updatePlan(List<? extends TblBonusPlan> list);
 }

@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.huateng.batch.dao.TblBonusPlanDao;
 import com.huateng.batch.model.TblBonusPlan;
-import com.huateng.batch.model.TblBonusPlanDetail;
 
 /***
  * 
@@ -21,13 +22,17 @@ import com.huateng.batch.model.TblBonusPlanDetail;
  */
 @Component
 public class TblBonusPlanDaoImpl implements TblBonusPlanDao {
+	private Logger logger = LoggerFactory.getLogger(TblBonusPlanDaoImpl.class);
 
 	@Autowired
 	private JdbcTemplate template;
 
 	@Override
 	public int[] insertPlan(List<? extends TblBonusPlan> list) {
-		int[] sReturn = template.execute("insert into " + TblBonusPlan.getTableClum() + " values(" + TblBonusPlan.getBeanClum() + ")",
+		String sql = "insert into " + TblBonusPlan.getTableClum() + " values(" + TblBonusPlan.getBeanClum() + ")";
+		
+		logger.info("开始执行sql:" + sql);
+		int[] sReturn = template.execute(sql,
 				new PreparedStatementCallback<int[]>() {
 
 					@Override
@@ -60,6 +65,46 @@ public class TblBonusPlanDaoImpl implements TblBonusPlanDao {
 
 				});
 		
+		return sReturn;
+	}
+	
+	public int[] updatePlan(List<? extends TblBonusPlan> list) {
+		
+		String sql ="UPDATE TBL_BONUS_PLAN set "//
+				+ " TOTAL_BONUS = TOTAL_BONUS + :totalBonus,"//
+				+ " VALID_BONUS = VALID_BONUS + :validBonus,"//
+				+ " MODIFY_OPER = :modifyOper,"//
+				+ " MODIFY_DATE = :modifyDate,"//
+				+ " MODIFY_TIME = :modifyTime"//
+				+ " WHERE USAGE_KEY = :usageKey"//
+				+ " and CUST_ID = :custId"//
+				+ " and ACCT_ID = :acctId"//
+				+ " and BP_PLAN_TYPE= :bpPlanType";//
+		
+		logger.info("开始执行sql:" + sql);
+		
+		int[] sReturn = template.execute(sql,new PreparedStatementCallback<int[]>() {
+
+			@Override
+			public int[] doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				for(TblBonusPlan plan :list) {
+					ps.setDouble(1, plan.getTotalBonus());
+					ps.setDouble(2, plan.getValidBonus());
+					ps.setString(3, plan.getModifyOper());
+					ps.setString(4, plan.getModifyDate());
+					ps.setString(5, plan.getModifyTime());
+					ps.setString(6, plan.getUsageKey());
+					ps.setString(7, plan.getCustId());
+					ps.setString(8, plan.getAcctId());
+					ps.setString(9, plan.getBpPlanType());
+					
+					ps.addBatch();
+				}
+				
+				return ps.executeBatch();
+			}
+			
+		});
 		return sReturn;
 	}
 
