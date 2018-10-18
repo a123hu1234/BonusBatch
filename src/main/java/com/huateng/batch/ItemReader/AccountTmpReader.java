@@ -95,7 +95,8 @@ public class AccountTmpReader {
 			throws Exception {
 		JdbcPagingItemReader<TblAccountInfTmp> reader = new JdbcPagingItemReader<>();
         reader.setDataSource(dataSource);               //设置数据源
-        reader.setFetchSize(10000);                         //FetchSize设置为2，表示每次从数据库中,2条数据
+        reader.setFetchSize(100);                         //FetchSize设置为2，表示每次从数据库中,2条数据
+      //  reader.setPageSize(pageSize);
         reader.setRowMapper(new BeanPropertyRowMapper<TblAccountInfTmp>(TblAccountInfTmp.class));       //把数据库表中每条数据映射到对象中
         OraclePagingQueryProvider queryProvider = new OraclePagingQueryProvider();
         queryProvider.setSelectClause("*");            //设置查询的列
