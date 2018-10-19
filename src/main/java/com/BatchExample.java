@@ -11,6 +11,7 @@ import com.huateng.batch.controller.ImportCustController;
 
 @SpringBootApplication
 public class BatchExample {
+	
 	public static void main(String[] args) {
 		try {
 		ApplicationContext context = SpringApplication.run(BatchExample.class, args);
