@@ -55,7 +55,7 @@ public class ComputeBonusConfig {
 	public Step computeBonusStep(StepBuilderFactory stepBuilderFactory,DataSource dataSource) {
 		Step step = null;
 		try {
-			 step = stepBuilderFactory.get("importAccountInfTmp").<BonusBean, BonusBean>chunk(5000)
+			 step = stepBuilderFactory.get("importAccountInfTmp").<BonusBean, BonusBean>chunk(10000)
 			.reader(bonusBeanReader(dataSource)).processor(processor()).writer(bonusAcctInfWriter).build();
 		}catch (Exception e) {
 			logger.error(e.getMessage(),e);

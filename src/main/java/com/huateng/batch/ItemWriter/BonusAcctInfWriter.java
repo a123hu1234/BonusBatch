@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.huateng.batch.dao.TblBonusAccItfDao;
 import com.huateng.batch.model.BonusBean;
 import com.huateng.batch.model.TblBonusAccItf;
+import com.huateng.constants.Constants;
 import com.huateng.drool.DroolIntance;
 import com.huateng.toprules.adapter.PackageResult.ActivityResult;
 import com.huateng.toprules.adapter.PackageResult.RuleGroupResult;
@@ -46,12 +48,17 @@ public class BonusAcctInfWriter implements ItemWriter<BonusBean>{
 		//logger.info("完成创建目录:" + dataLoca);
 
 		String ruleFileName = ConfigProperties.getProperties("file.name.rule.JF");
+		/**
+		 * 将交易数据转化成规则引擎计算对象
+		 */
 		List<TxnBonus> list = convertToTxnBonus(items);
 	
 		topRules.execPkg(list, ruleFileName);
+		//List<ActivityResult> results = new ArrayList<ActivityResult>();
 		logger.info("保存计算结果");
 		List<TblBonusAccItf> list2 = new ArrayList<>();
-		for(TxnBonus txnBonus: list) {
+		for(TxnBonus txnBonus: list) { //TODO
+			
 			List<TblBonusAccItf> itfList = new ArrayList<>();
 			writToBonusBean(itfList, txnBonus);
 			list2.addAll(itfList);
@@ -62,20 +69,166 @@ public class BonusAcctInfWriter implements ItemWriter<BonusBean>{
 	}
 	private void writToBonusBean(List<TblBonusAccItf> itfList, TxnBonus txnBonus) {
 		List<ActivityResult> actResultList = txnBonus.getResult().activityGroupResults;
+		Map<String,List<ActivityResult>> resultMap = new HashMap<String,List<ActivityResult>>();//保存按比例拆分积分的活动结果，key:积分计划类型,
+		Map<String,ActivityResult> resultMap2 = new HashMap<String,ActivityResult>();//保存按最大,最小配置的活动结果key:积分计划类型,
 		if (actResultList != null && actResultList.size() > 0) {
+			
 			for (ActivityResult ar : actResultList) {
+				String valueType = ar.valueType;//1.最大 2.最小 3.按比例
+				
 				if (ar.result != null) {
 					if (ar.ruleGroupResults != null && ar.ruleGroupResults.size() > 0) {
-						for (int k = 0; k < ar.ruleGroupResults.size(); k++) {
-							RuleGroupResult grp = (RuleGroupResult) ar.ruleGroupResults.get(k);
-							printGrpResult(itfList, txnBonus, ar, grp);
-						}
+					//	for (int k = 0; k < ar.ruleGroupResults.size(); k++) {
+						//	RuleGroupResult grp = (RuleGroupResult) ar.ruleGroupResults.get(k);//单一规则结果
+							if(Constants.VALUE_TYPE_MAX.equals(valueType)) {
+								getMaxResult(ar,resultMap2);
+							}else if(Constants.VALUE_TYPE_MIN.equals(valueType)) {
+								getMinResult(ar,resultMap2);
+							}else if(Constants.VALUE_TYPE_PROPORTION.equals(valueType)) {
+								getResultMap(ar,resultMap);
+							}
+							
+					//	}
 					}
 				}
 			}
 		}
+		/**
+		 * 将按比例的积分计划添加到入账信息表中
+		 */
+		for(Entry<String,List<ActivityResult>> entry: resultMap.entrySet()) {
+			List<ActivityResult> list = entry.getValue();
+			for(ActivityResult result:list) {
+				for (int k = 0; k < result.ruleGroupResults.size(); k++) {
+					RuleGroupResult rg = (RuleGroupResult) result.ruleGroupResults.get(k);
+					printGrpResult(itfList, txnBonus, result, rg);
+				}
+				
+			}
+		}
+		
+		/**
+		 * 将按最大最小的积分计划添加到入账信息表中
+		 */
+		for(Entry<String,ActivityResult> entry:resultMap2.entrySet()) {
+			ActivityResult result = entry.getValue();
+			for (int k = 0; k < result.ruleGroupResults.size(); k++) {
+				RuleGroupResult rg = (RuleGroupResult) result.ruleGroupResults.get(k);
+				printGrpResult(itfList, txnBonus, result, rg);
+			}
+		}
+		
 		
 	}
+	
+	/***
+	 * 
+	 * @param grp
+	 * @param ar
+	 * @param resultMap2
+	 */
+	private void getMinResult( ActivityResult ar, Map<String, ActivityResult> resultMap2) {
+		String bonusType =ar.bonusType;
+		ActivityResult result = resultMap2.get(bonusType);
+		if(result == null) {
+			resultMap2.put(bonusType, ar);
+			return;
+		}
+		Double point = result.result.bonusPoint;
+		Double point2 = ar.result.bonusPoint;
+		if(point2.compareTo(point)<0) {//后一个的活动积分大于前一个的活动积分,替代前一个积分活动
+			resultMap2.put(bonusType, ar);
+		}
+		
+	}
+	/***
+	 * 
+	 * @param grp
+	 * @param ar
+	 * @param resultMap2
+	 */
+	private void getMaxResult( ActivityResult ar, Map<String, ActivityResult> resultMap2) {
+		String bonusType =ar.bonusType;
+		ActivityResult result = resultMap2.get(bonusType);
+		if(result == null) {
+			resultMap2.put(bonusType, ar);
+			return;
+		}
+		Double point = result.result.bonusPoint;
+		Double point2 = ar.result.bonusPoint;
+		if(point2.compareTo(point)>0) {//后一个的活动积分大于前一个的活动积分,替代前一个积分活动
+			resultMap2.put(bonusType, ar);
+		}
+		
+	}
+	/***
+	 * 
+	 * @param grp
+	 * @param ar
+	 * @param resultMap
+	 */
+	private void getResultMap( ActivityResult ar, Map<String, List<ActivityResult>> resultMap) {
+		String bonusType = ar.bonusType;//积分计划类型
+		//String valueType = ar.valueType;//1.最大 2.最小 3.按比例
+		String analysisValue= ar.analysisValue;//比例值
+		
+		List<ActivityResult> results = resultMap.get(bonusType);
+		if(results == null) {
+			results = new ArrayList<ActivityResult>();
+			resultMap.put(bonusType, results);
+		}
+		
+		String[] ss = analysisValue.split("\\|");
+		for(String s :ss) {
+			String proportion = s.split(",")[0];
+			String bType = s.split(",")[1];
+			ActivityResult result = create(proportion,bType,ar);
+			results.add(result);
+		}
+		
+		
+		
+		
+	}
+	/***
+	 * 
+	 * @param proportion
+	 * @param bType
+	 * @param ar
+	 * @return
+	 */
+	private ActivityResult create(String proportion, String type, ActivityResult ar) {
+		ActivityResult result = new ActivityResult();
+		result.name = ar.name;
+		result.periodStart = ar.periodStart;
+		result.periodEnd = ar.periodEnd;
+		result.validDate = ar.validDate;
+		result.effectiveDate = ar.effectiveDate;
+		result.bonusType = type;
+		result.effectiveFlag = ar.effectiveFlag;
+		result.bonusCycle = ar.bonusCycle;
+		result.cyclePoints = ar.cyclePoints;
+		result.valueType = ar.valueType;
+		result.analysisValue = proportion;
+		result.result.ruleName = ar.result.ruleName;// 规则名字
+		result.result.bpPlanType = type;
+		result.result.bonusPoint = ar.result.bonusPoint;// BIGINT
+																														// 相关积分
+		result.result.validDate = ar.result.validDate;// CHAR(8) 有效期
+		result.result.effectiveDate = ar.result.effectiveDate;// 生效日期
+		result.result.priority = ar.result.priority;// 优先级
+
+		// result.results =ar.results;
+		result.ruleGroupResults = ar.ruleGroupResults;
+		return result;
+	}
+	/***
+	 * 
+	 * @param itfList
+	 * @param txnBonus
+	 * @param ar
+	 * @param grp
+	 */
 	private void printGrpResult(List<TblBonusAccItf> itfList, TxnBonus txnBonus, ActivityResult ar, RuleGroupResult grp) {
 		if (grp.results != null && grp.results.size() > 0) {
 			int size = grp.results.size();
@@ -88,6 +241,11 @@ public class BonusAcctInfWriter implements ItemWriter<BonusBean>{
 	}
 	private void printResult(List<TblBonusAccItf> itfList, TxnBonus txnBonus, TxnBonusResult rt, ActivityResult ar) {
 		int bonusPoint = (int) rt.getRoundBonusPoint();
+		String valueType = ar.valueType;
+		if(Constants.VALUE_TYPE_PROPORTION.equals(valueType)) {
+			int proportion = Integer.parseInt(ar.analysisValue);
+			bonusPoint = bonusPoint * proportion /100;
+		}
 		if (rt.isExec && rt.isEffect && bonusPoint > 0) {
 			if (rt.isExec && rt.isEffect) {
 				taskDateSeq++;// 计算待入账序列
@@ -110,6 +268,9 @@ public class BonusAcctInfWriter implements ItemWriter<BonusBean>{
 				StringBuffer descSB = new StringBuffer();
 				descSB.append("金额:").append(txnBonus.getTxn_amt());
 				descSB.append(",笔数:").append(txnBonus.getTxn_cnt());
+				if(Constants.VALUE_TYPE_PROPORTION.equals(valueType)) {
+					descSB.append(",按比例拆分,拆分比例:" + Integer.parseInt(ar.analysisValue));
+				}
 				String desc = descSB.length() > 100 ? descSB.substring(0, 100) : descSB.toString();
 				itf.setTxnDescOra(desc);// txn_desc_ora 原交易描述
 				itf.setTxnTime(txnBonus.getTxn_time());
@@ -209,6 +370,7 @@ public class BonusAcctInfWriter implements ItemWriter<BonusBean>{
 		txnBonus.setMCC(StringUtil.trim(item.getMccCode()));// poc相关字段
 		txnBonus.setTC(StringUtil.trim(item.getTc()));// poc相关字段
 		txnBonus.setMerchantNo(StringUtil.trim(item.getMcthNo()));// poc相关字段
+		txnBonus.setBirthday_today(StringUtil.trim(item.getTxnDate().equals(item.getCustBirthday())?"1":""));
 
 		// txnBonus.setFront_cust(StringUtil.trim(rs.getString("FRONT_CUST")));
 		// txnBonus.setIsStatistic(StringUtil.trim(rs.getString("ISSTATISTIC")));

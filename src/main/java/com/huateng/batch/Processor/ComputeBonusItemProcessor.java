@@ -1,9 +1,6 @@
 package com.huateng.batch.Processor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +9,10 @@ import org.springframework.batch.item.validator.ValidationException;
 
 import com.huateng.batch.model.BonusBean;
 import com.huateng.batch.model.TblBonusAccItf;
-import com.huateng.drool.DroolIntance;
 import com.huateng.toprules.adapter.PackageResult.ActivityResult;
 import com.huateng.toprules.adapter.PackageResult.RuleGroupResult;
-import com.huateng.toprules.adapter.TopRules;
 import com.huateng.toprules.adapter.TxnBonus;
 import com.huateng.toprules.adapter.TxnBonusResult;
-import com.huateng.util.ConfigProperties;
-import com.huateng.util.FileUtil;
 import com.huateng.util.StringUtil;
 import com.huateng.util.Util;
 

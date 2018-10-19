@@ -228,5 +228,27 @@ public class TblCustInf {
 		this.renzDate = renzDate;
 	}
 	
-
+	public static String getBeanClum() {
+		String sReturn = ":custId,:custName,:usageKey,:openBrh,:custType,:custIdType,:custIdNum,:custSex,:hunyzk,:xuelii,:custBirthday,:openDate,:closeDate,:custMobile,:custAddr,:custLevel,:custBonusStatus,:modifyDate,:modifyTime,:extCoulmn1,:extCoulmn2,:extCoulmn3,:extCoulmn4,:familyAddr,:familyAddrMobile,:officeAddr,:officeAddrMobile,:certAddr,:certAddrMobile,:chanlNo,:relatType,:renzDate";
+		return sReturn;
+	}
+	
+	/***
+	 * 
+	 * @return
+	 */
+	public static String getTableClumsWen() {
+		String sReturn = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+		return sReturn;
+	}
+	
+	/***
+	 * 
+	 * @return
+	 */
+	public static String getTableClum() {
+		String sReturn = "TBL_CUST_INF(CUST_ID,CUST_NAME,USAGE_KEY,OPEN_BRH,CUST_TYPE,CUST_ID_TYPE,CUST_ID_NUM,CUST_SEX,HUNYZK,XUELII,CUST_BIRTHDAY,OPEN_DATE,CLOSE_DATE,CUST_MOBILE,CUST_ADDR,CUST_LEVEL,CUST_BONUS_STATUS,MODIFY_DATE,MODIFY_TIME,EXT_COULMN1,EXT_COULMN2,EXT_COULMN3,EXT_COULMN4,FAMILY_ADDR,FAMILY_ADDR_MOBILE,OFFICE_ADDR,OFFICE_ADDR_MOBILE,CERT_ADDR,CERT_ADDR_MOBILE,CHANL_NO,RELAT_TYPE,RENZ_DATE)";
+		return sReturn;
+	}
+	
 }

@@ -199,6 +199,13 @@ public class Constants {
 	/**米宝价值*/
 	public static final String MI_BAO_WORTH = "mibaoWorth";
 	
+	/**最大*/
+	public static final String VALUE_TYPE_MAX="1";
+	/**最小*/
+	public static final String VALUE_TYPE_MIN="2";
+	/**按比例*/
+	public static final String VALUE_TYPE_PROPORTION="3";
+	
 	/**
 	 * 积分账户有效期  到期处理状态
 	 */

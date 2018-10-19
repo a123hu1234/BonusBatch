@@ -93,7 +93,7 @@ public class IntoAcctConfig {
 		Step step = null;
 		try {
 			step = stepBuilderFactory.get("insertNotExistsBonusPlanStep")//
-					.<TblBonusPlan, TblBonusPlan>chunk(1000)//
+					.<TblBonusPlan, TblBonusPlan>chunk(10000)//
 					.reader(insertNotExistsBonusPlanReader())//
 					//.processor(tblBonusPlanProcessor())//
 					.writer(tblBonusPlanWriter).build();//
@@ -124,7 +124,7 @@ public class IntoAcctConfig {
 		Step step = null;
 		try {
 			step = stepBuilderFactory.get("insertNotExistsBonusPlanDetailStep")//
-					.<TblBonusPlanDetail, TblBonusPlanDetail>chunk(1000)//
+					.<TblBonusPlanDetail, TblBonusPlanDetail>chunk(10000)//
 					.reader(insertNotExistsBonusPlanDetailReader())//
 					//.processor(intoAcctprocessor())//
 					.writer(planDetailWriter).build();//
