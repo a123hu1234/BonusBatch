@@ -22,8 +22,8 @@ public class BatchExample {
 		//ComputeBonus  controller = context.getBean(ComputeBonus.class);
 		
 		//IntoAcctController controller = context.getBean(IntoAcctController.class);
-	   // String custsReturn  = importCustController.imp("C:\\Users\\63101\\Desktop\\CBS\\CBS_CUSTINFO_20180611");
-		//String cardsReturn  = importCardController.imp("C:\\Users\\63101\\Desktop\\CBS\\CBS_CARDINFO_20180611");
+			String custsReturn  = importCustController.imp("C:\\Users\\63101\\Desktop\\CBS\\CBS_CUSTINFO_20180611");
+			String cardsReturn  = importCardController.imp("C:\\Users\\63101\\Desktop\\CBS\\CBS_CARDINFO_20180611");
 			String AccountsReturn  = importAccountController.imp("C:\\Users\\63101\\Desktop\\CBS\\CBS_ACCOUNTINFO_20180611");
 			//String sReturn = dailyController.imp("C:\\Users\\11299\\Desktop\\TBL_TXN_ORA_DAILY");
 			//String sReturn = controller.imp("C:\\Users\\11299\\Desktop\\TBL_TXN_ORA_DAILY");

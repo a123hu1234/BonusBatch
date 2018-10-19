@@ -34,14 +34,10 @@ import net.bytebuddy.implementation.bind.annotation.Super;
  * account信息阅读器
  * by ygq
  */
-@Configuration
-@EnableBatchProcessing
 public class AccountTmpReader {
 	
 	
-	@Bean
-	@StepScope
-	public FlatFileItemReader<TblAccountInfTmp> accountTmpFileReader(@Value("#{jobParameters['input.file.name']}") String pathToFile)
+	public FlatFileItemReader<TblAccountInfTmp> accountTmpFileReader(String pathToFile)
 			throws Exception {
 		
 		FlatFileItemReader<TblAccountInfTmp> reader = new FlatFileItemReader<TblAccountInfTmp>(); //
@@ -90,7 +86,6 @@ public class AccountTmpReader {
 		return reader;
 	}*/
 	
-	@Bean
 	public JdbcPagingItemReader<TblAccountInfTmp> accountTmpDataBaseReader(DataSource dataSource)
 			throws Exception {
 		JdbcPagingItemReader<TblAccountInfTmp> reader = new JdbcPagingItemReader<>();

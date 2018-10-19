@@ -48,9 +48,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
+import com.huateng.batch.ItemReader.CustTmpReader;
+import com.huateng.batch.ItemReader.IntoAcctReader;
 import com.huateng.batch.ItemWriter.CustTempItemWriter;
 import com.huateng.batch.Processor.CustTmpItemProcessor;
 import com.huateng.batch.listener.CsvJobListener;
+import com.huateng.batch.model.TblAccountInfTmp;
+import com.huateng.batch.model.TblBonusAccItf;
 import com.huateng.batch.model.TblCustInf;
 import com.huateng.batch.model.TblCustInfTmp;
 import com.huateng.batch.validator.CsvBeanValidator;
@@ -151,7 +155,23 @@ public class TblCustInfTmpConfig {
 		return processor;
 	}
 	
+	//文件读取客户数据
+	@Bean
+	@StepScope
+   public FlatFileItemReader<TblCustInfTmp> custTmpFileReader(@Value("#{jobParameters['input.file.name']}") String pathToFile) throws Exception{
+		FlatFileItemReader<TblCustInfTmp> reader = new CustTmpReader().custTmpFileReader(pathToFile);
+		return reader;
+
+	}
 	
+	
+	
+	@Bean
+	public JdbcPagingItemReader<TblCustInfTmp> custTmpDataBaseReader(DataSource dataSource)
+			throws Exception {
+		JdbcPagingItemReader<TblCustInfTmp> reader = new CustTmpReader().custTmpDataBaseReader(dataSource);
+        return reader;
+	}
 	
 	
 	

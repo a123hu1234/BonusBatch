@@ -1,5 +1,6 @@
 package com.huateng.batch.ItemReader;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,14 +35,13 @@ import net.bytebuddy.implementation.bind.annotation.Super;
  * cust信息阅读器
  * by ygq
  */
-@Configuration
-@EnableBatchProcessing
+//@Configuration
+//@EnableBatchProcessing
 public class CustTmpReader {
 	
 	
-	@Bean
-	@StepScope
-	public FlatFileItemReader<TblCustInfTmp> custTmpFileReader(@Value("#{jobParameters['input.file.name']}") String pathToFile)
+	
+	public FlatFileItemReader<TblCustInfTmp> custTmpFileReader(String pathToFile)
 			throws Exception {
 		
 		FlatFileItemReader<TblCustInfTmp> reader = new FlatFileItemReader<TblCustInfTmp>(); //
@@ -65,32 +65,6 @@ public class CustTmpReader {
 		return reader;
 	}
 	
-	
-	/*@Bean
-	@StepScope
-	public FlatFileItemReader<TblCustInfTmp> custTmpReader(@Value("#{jobParameters['input.file.name']}") String pathToFile)
-			throws Exception {
-		FlatFileItemReader<TblCustInfTmp> reader = new FlatFileItemReader<TblCustInfTmp>(); //
-		reader.setResource(new FileUrlResource(pathToFile)); //
-		reader.setLineMapper(new DefaultLineMapper<TblCustInfTmp>() {
-			{ //
-				setLineTokenizer(new DelimitedLineTokenizer(Util.asciiToStrings("0x03")) {
-					{
-						setNames(TblCustInfTmp.toArray());
-					}
-				});
-				setFieldSetMapper(new BeanWrapperFieldSetMapper<TblCustInfTmp>() {
-					{
-						setTargetType(TblCustInfTmp.class);
-					}
-				});
-			}
-		});
-
-		return reader;
-	}*/
-	
-	@Bean
 	public JdbcPagingItemReader<TblCustInfTmp> custTmpDataBaseReader(DataSource dataSource)
 			throws Exception {
 		JdbcPagingItemReader<TblCustInfTmp> reader = new JdbcPagingItemReader<>();
@@ -108,8 +82,4 @@ public class CustTmpReader {
         return reader;
 
 	}
-	
-
-	
-
 }

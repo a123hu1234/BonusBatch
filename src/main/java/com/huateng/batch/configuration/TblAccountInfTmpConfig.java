@@ -48,6 +48,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
+import com.huateng.batch.ItemReader.AccountTmpReader;
 import com.huateng.batch.ItemWriter.AccountTempItemWriter;
 import com.huateng.batch.Processor.AccountTmpItemProcessor;
 import com.huateng.batch.listener.AccountJobListener;
@@ -151,8 +152,27 @@ public class TblAccountInfTmpConfig {
 		return processor;
 	}
 	
+	//从文件加载帐户数据
+	@Bean
+	@StepScope
+	public FlatFileItemReader<TblAccountInfTmp> accountTmpFileReader(@Value("#{jobParameters['input.file.name']}") String pathToFile)
+			throws Exception {
+		
+		FlatFileItemReader<TblAccountInfTmp> reader = new AccountTmpReader().
+				accountTmpFileReader(pathToFile);
+
+		return reader;
+	}
 	
-	
+	//从临时表加载账户数据
+	@Bean
+	public JdbcPagingItemReader<TblAccountInfTmp> accountTmpDataBaseReader(DataSource dataSource)
+			throws Exception {
+		JdbcPagingItemReader<TblAccountInfTmp> reader = new AccountTmpReader().
+				accountTmpDataBaseReader(dataSource);
+		return reader;
+
+	}
 	
 	
 }

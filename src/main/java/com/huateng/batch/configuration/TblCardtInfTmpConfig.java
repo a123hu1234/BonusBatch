@@ -48,9 +48,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
+import com.huateng.batch.ItemReader.CardTmpReader;
 import com.huateng.batch.ItemWriter.CardTempItemWriter;
 import com.huateng.batch.Processor.CardTmpItemProcessor;
 import com.huateng.batch.listener.CardJobListener;
+import com.huateng.batch.model.TblCardInfTmp;
 import com.huateng.batch.model.TblCardInf;
 import com.huateng.batch.model.TblCardInfTmp;
 import com.huateng.batch.validator.CsvBeanValidator;
@@ -151,6 +153,27 @@ public class TblCardtInfTmpConfig {
 		return processor;
 	}
 	
+	//从文件加载帐户数据
+	@Bean
+	@StepScope
+	public FlatFileItemReader<TblCardInfTmp> cardTmpFileReader(@Value("#{jobParameters['input.file.name']}") String pathToFile)
+			throws Exception {
+		
+		FlatFileItemReader<TblCardInfTmp> reader = new CardTmpReader().
+				cardTmpFileReader(pathToFile);
+
+		return reader;
+	}
+	
+	//从临时表加载账户数据
+	@Bean
+	public JdbcPagingItemReader<TblCardInfTmp> cardTmpDataBaseReader(DataSource dataSource)
+			throws Exception {
+		JdbcPagingItemReader<TblCardInfTmp> reader = new CardTmpReader().
+				cardTmpDataBaseReader(dataSource);
+		return reader;
+
+	}
 	
 	
 	

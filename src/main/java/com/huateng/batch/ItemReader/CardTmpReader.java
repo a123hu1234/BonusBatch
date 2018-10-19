@@ -34,14 +34,10 @@ import net.bytebuddy.implementation.bind.annotation.Super;
  * card信息阅读器
  * by ygq
  */
-@Configuration
-@EnableBatchProcessing
 public class CardTmpReader {
 	
 	
-	@Bean
-	@StepScope
-	public FlatFileItemReader<TblCardInfTmp> cardTmpFileReader(@Value("#{jobParameters['input.file.name']}") String pathToFile)
+	public FlatFileItemReader<TblCardInfTmp> cardTmpFileReader(String pathToFile)
 			throws Exception {
 		
 		FlatFileItemReader<TblCardInfTmp> reader = new FlatFileItemReader<TblCardInfTmp>(); //
@@ -90,7 +86,6 @@ public class CardTmpReader {
 		return reader;
 	}*/
 	
-	@Bean
 	public JdbcPagingItemReader<TblCardInfTmp> cardTmpDataBaseReader(DataSource dataSource)
 			throws Exception {
 		JdbcPagingItemReader<TblCardInfTmp> reader = new JdbcPagingItemReader<>();
