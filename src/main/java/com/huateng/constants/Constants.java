@@ -205,6 +205,15 @@ public class Constants {
 	public static final String VALUE_TYPE_MIN="2";
 	/**按比例*/
 	public static final String VALUE_TYPE_PROPORTION="3";
+	/***
+	 * 消费交易类型
+	 */
+	public static final String TXN_TYPE_CONS = "01";
+	
+	/***
+	 * 退款交易类型
+	 */
+	public static final String TXN_TYPE_RESFUND = "02";
 	
 	/**
 	 * 积分账户有效期  到期处理状态

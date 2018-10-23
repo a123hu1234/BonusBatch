@@ -163,6 +163,8 @@ public class IntoAcctConfig {
 		return step;
 	}
 	
+	
+	
 	@Bean
 	public ItemReader<TblBonusAccItf> bonusBookingReader() throws Exception {
 		ItemReader<TblBonusAccItf> reader = new IntoAcctReader() {
