@@ -12,6 +12,7 @@ import org.springframework.batch.item.database.support.OraclePagingQueryProvider
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import com.huateng.batch.model.BonusBean;
+import com.huateng.constants.Constants;
 
 public class BonusBeanReader {
 	private DataSource dataSource;
@@ -49,7 +50,7 @@ public class BonusBeanReader {
 		reader.setRowMapper(new BeanPropertyRowMapper<BonusBean>(BonusBean.class)); // 把数据库表中每条数据映射到对象中
 		reader.setSql(
 				"select t1.TXN_CODE_ORA,t1.TXN_SSN_ORA,t1.TXN_TYPE,t1.CUST_ID,t1.CARD_NO,t1.PRODUCT_TYPE,t1.TXN_AMT,t1.MCTH_NO,t1.MCC_CODE,t1.TC,t1.TXN_DATE,t1.TXN_TIME,t2.CUST_BIRTHDAY "
-				+ "from TBL_TXN_ORA_DAILY t1 left join TBL_CUSt_INF t2 on t1.CUST_ID=t2.CUST_ID where 1=1 order by t1.TXN_DATE desc,t1.TXN_TIME desc");
+				+ "from TBL_TXN_ORA_DAILY t1 left join TBL_CUSt_INF t2 on t1.CUST_ID=t2.CUST_ID where 1=1  order by t1.TXN_DATE desc,t1.TXN_TIME desc");
 	
 		return reader;
 

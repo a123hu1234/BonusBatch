@@ -3,7 +3,6 @@ package com.huateng.batch.dao;
 import java.util.List;
 
 import com.huateng.batch.model.TblCardInf;
-import com.huateng.batch.model.TblCardInfTmp;
 
 public interface TblCardInfDaoI {
 	
